@@ -16,10 +16,14 @@ pipeline {
         }
 
         stage('Deploy to Kubernetes') {
-            steps {
-                sh 'kubectl apply -f deployment.yaml'
-                sh 'kubectl apply -f service.yaml'
-            }
-        }
+    steps {
+        sh '''
+        export KUBECONFIG=/var/lib/jenkins/.kube/config
+        kubectl get nodes
+        kubectl apply -f deployment.yaml
+        kubectl apply -f service.yaml
+        '''
+    }
+}
     }
 }
